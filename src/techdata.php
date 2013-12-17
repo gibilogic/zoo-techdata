@@ -19,6 +19,42 @@ App::getInstance('zoo')->loader->register('ElementRepeatable', 'elements:repeata
  */
 class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
 {
+    protected function _getFields()
+    {
+        if (isset($this->fields))
+        {
+            return $this->fields;
+        }
+
+        $this->fields = array_map("trim", explode(",", $this->config->get('fields')));
+        foreach ($this->fields as $key => $field) {
+            if (!$this->hasFieldValue($field)) {
+                unset($this->fields[$key]);
+            }
+        }
+
+        if (!count($this->fields)) {
+            return array();
+        }
+
+        return $this->fields;
+    }
+
+    /**
+		 * Get searchable data
+     *
+     * @return string
+     */
+    protected function _getSearchData()
+    {
+        $fields = $this->_getFields();
+        $values = array();
+        foreach ($fields as $field) {
+            $values[] = $this->get($field);
+        }
+        $search_data = implode(" ",$values);
+        return $search_data;
+    }
 
     /**
      * Check if element has a value
@@ -59,13 +95,7 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
      */
     public function render($params = array())
     {
-        $this->fields = array_map("trim", explode(",", $this->config->get('fields')));
-        foreach ($this->fields as $key => $field) {
-            if (!$this->hasFieldValue($field)) {
-                unset($this->fields[$key]);
-            }
-        }
-
+        $this->fields = $this->_getFields();
         if (!count($this->fields)) {
             return '';
         }
