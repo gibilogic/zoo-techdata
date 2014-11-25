@@ -1,12 +1,12 @@
 <?php
 
 /**
- * @version     techdata.php 2013-10-30 10:52:00 UTC zanardi
+ * @version     techdata.php 2014-11-25 09:33:00 UTC zanardi
  * @package     Techdata element for Zoo
  * @author      GiBiLogic <info@gibilogic.com>
  * @authorUrl   http://www.gibilogic.com
- * @copyright   (C) 2013 GiBiLogic snc
- * @license     GNU/GPL v2 or later
+ * @copyright   (C) 2013-2014 GiBiLogic snc
+ * @license     GNU/GPL v3 or later
  */
 defined('_JEXEC') or die();
 
@@ -28,11 +28,23 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
         }
 
         $this->fields = array_map("trim", explode(",", $this->config->get('fields')));
-        foreach ($this->fields as $key => $field)
+        foreach ($this->fields as $key => &$field)
         {
-            if (!$this->hasFieldValue($field))
+            // Check for "registeredOnly" fields type
+            if (strpos($field, '*') === 0)
             {
+                if (JFactory::getUser()->guest)
+                {
+                    unset($this->fields[$key]);
+                    continue;
+                }
+                $field = str_replace('*', '', $field);
+            }
+
+            // Check if we have at least some values in the field
+            if (!$this->hasFieldValue($field)) {
                 unset($this->fields[$key]);
+                continue;
             }
         }
 
