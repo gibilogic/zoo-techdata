@@ -19,6 +19,7 @@ App::getInstance('zoo')->loader->register('ElementRepeatable', 'elements:repeata
  */
 class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
 {
+
     protected function _getFields()
     {
         if (isset($this->fields))
@@ -27,13 +28,16 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
         }
 
         $this->fields = array_map("trim", explode(",", $this->config->get('fields')));
-        foreach ($this->fields as $key => $field) {
-            if (!$this->hasFieldValue($field)) {
+        foreach ($this->fields as $key => $field)
+        {
+            if (!$this->hasFieldValue($field))
+            {
                 unset($this->fields[$key]);
             }
         }
 
-        if (!count($this->fields)) {
+        if (!count($this->fields))
+        {
             return array();
         }
 
@@ -41,7 +45,7 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
     }
 
     /**
-		 * Get searchable data
+     * Get searchable data
      *
      * @return string
      */
@@ -49,10 +53,14 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
     {
         $fields = $this->_getFields();
         $values = array();
-        foreach ($fields as $field) {
-            $values[] = $this->get($field);
+        foreach ($this as $self)
+        {
+            foreach ($fields as $field)
+            {
+                $values[] = $self[$field];
+            }
         }
-        $search_data = implode(" ",$values);
+        $search_data = implode(" ", $values);
         return $search_data;
     }
 
@@ -79,8 +87,10 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
     public function hasFieldValue($field)
     {
         $value = array();
-        foreach ($this as $self) {
-            if ($self[$field]) {
+        foreach ($this as $self)
+        {
+            if ($self[$field])
+            {
                 return true;
             }
         }
@@ -96,7 +106,8 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
     public function render($params = array())
     {
         $this->fields = $this->_getFields();
-        if (!count($this->fields)) {
+        if (!count($this->fields))
+        {
             return '';
         }
 
@@ -116,7 +127,8 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
      */
     protected function _render($params = array())
     {
-        if ($layout = $this->getLayout('render.php')) {
+        if ($layout = $this->getLayout('render.php'))
+        {
             return $this->renderLayout($layout);
         }
     }
@@ -150,7 +162,8 @@ class ElementTechdata extends ElementRepeatable implements iRepeatSubmittable
      */
     protected function _editForm($trusted_mode = true)
     {
-        if ($layout = $this->getLayout('edit.php')) {
+        if ($layout = $this->getLayout('edit.php'))
+        {
             return $this->renderLayout($layout, compact('trusted_mode')
             );
         }
