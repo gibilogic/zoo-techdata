@@ -1,7 +1,7 @@
 zoo-techdata
 ============
 
-A custom element for ZOO by YOOtheme. Provides a simple way to add a specification table to an item.
+A custom element for ZOO by YOOtheme (http://www.yootheme.com). Provides a simple way to add a specification table to an item.
 
 ## Preface
 
@@ -36,4 +36,8 @@ And as mentioned before, the field prefixed with * will be hidden if the user is
 This software is given as is, with no support and no responsability. You are still allowed to open issues if you like, but we cannot guarantee a reply.
 You're free to fork and use as you wish, as long as you comply with GPL license version 3 or greater. 
 We are also glad to accept and evaluate PRs.
+
+## Final notes
+
+We wrote this software because we needed and we could not find a similar solution. If you feel our work is overlapping with another existing software, feel free to let us know and we will happily evaluate the chance to merge our efforts.
 
